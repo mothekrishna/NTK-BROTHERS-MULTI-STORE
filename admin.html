@@ -1,1 +1,56 @@
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NTK BROTHERS Admin Panel</title>
+<style>
+body{font-family:Arial;background:#f1f5f9;margin:0;color:#172554}
+header{background:#101d3a;color:white;padding:22px}
+main{max-width:900px;margin:auto;padding:18px}
+.card{background:white;padding:18px;border-radius:12px;margin:12px 0}
+input,button{padding:12px;border-radius:7px;border:1px solid #ccc}
+button{background:#f28c28;color:#111827;font-weight:bold}
+.note{color:#64748b}
+</style>
+</head>
+<body>
+<header>
+<h2>NTK BROTHERS</h2>
+<p>MULTI STORE — Admin Panel</p>
+</header>
+<main>
+<div class="card">
+<h3>Admin Login</h3>
+<p class="note">Demo screen only. Secure login is not connected yet.</p>
+<label>Admin name</label><br>
+<input id="adminName" placeholder="Enter admin name"><br><br>
+<label>Access code</label><br>
+<input id="accessCode" type="password" placeholder="Enter access code"><br><br>
+<button onclick="login()">Open Dashboard</button>
+<p id="message"></p>
+</div>
+<div class="card" id="dashboard" hidden>
+<h3>Dashboard</h3>
+<p>Total orders: <b id="orders">0</b></p>
+<p class="note">Orders will appear here after a secure database is connected.</p>
+<h3>Order Management</h3>
+<p>New Orders • Processing • Dispatched • Delivered • Cancelled</p>
+</div>
+</main>
+<script>
+function login(){
+const n=document.getElementById('adminName').value.trim();
+const c=document.getElementById('accessCode').value;
+if(!n||!c){
+document.getElementById('message').textContent='Please enter both fields.';
+return;
+}
+document.getElementById('message').textContent=
+'Demo only: secure admin authentication is not configured.';
+}
+</script>
+</body>
+</html>
