@@ -1,41 +1,62 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NTK BROTHERS MULTI STORE</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172554}
-header{background:#101d3a;color:white;padding:22px 16px}
-h1{margin:0;font-size:25px}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f5fa;color:#172554}
+header{background:#101d3a;color:white;padding:24px 16px}
+header h1{margin:0;font-size:27px}
 header p{margin-bottom:0}
-main{padding:18px;max-width:900px;margin:auto}
-input{box-sizing:border-box;width:100%;padding:13px;border:1px solid #ccd3e0;border-radius:8px;font-size:16px}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:18px}
-article{background:white;padding:16px;border-radius:12px;box-shadow:0 2px 8px #0001}
-article h3{margin-top:8px}
-button{background:#f28c28;color:#111827;border:0;padding:11px 13px;border-radius:8px;font-weight:bold}
-footer{padding:20px;text-align:center;color:#475569}
+main{padding:18px;max-width:1000px;margin:auto}
+input{width:100%;padding:14px;border:1px solid #ccd3e0;border-radius:10px;font-size:16px;margin:12px 0}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+article{background:white;padding:15px;border-radius:16px;box-shadow:0 3px 12px #0001}
+article h3{margin:8px 0}
+.price{font-weight:bold;color:#d97706}
+button{background:#f28c28;color:#111827;border:0;padding:12px;border-radius:10px;font-weight:bold;margin-top:8px}
+footer{text-align:center;padding:22px}
+@media(max-width:360px){.products{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header><h1>NTK BROTHERS MULTI STORE</h1><p>Your Store • Your Choice • Home Delivery</p></header>
+<header>
+<h1>NTK BROTHERS MULTI STORE</h1>
+<p>Your Store • Your Choice • Home Delivery</p>
+</header>
 <main>
 <h2>Welcome to our store</h2>
-<p>Browse our sample products. Prices and stock are not live yet.</p>
-<input id="search" placeholder="Search products..." aria-label="Search products">
-<div class="products" id="products"></div>
-<h2>Cart: <span id="count">0</span> items</h2>
-<p>For orders and enquiries, contact us on WhatsApp.</p>
-<button onclick="window.open('https://wa.me/919700071606','_blank')">WhatsApp Order Enquiry</button>
+<p>Browse our products and contact us to order.</p>
+<input id="search" placeholder="Search products..." oninput="showProducts()">
+<div id="products" class="products"></div>
+<h2>Your Cart: <span id="count">0</span> items</h2>
+<button onclick="orderWhatsApp()">Order on WhatsApp</button>
+<p>WhatsApp Support: 9700071606</p>
 </main>
-<footer>NTK BROTHERS MULTI STORE • Sample website</footer>
+<footer>© NTK BROTHERS MULTI STORE</footer>
 <script>
-const items=[['Rice','Basmati Rice'],['Cooking Oil','Cooking Oil'],['Clothing','Cotton T-Shirt'],['Electronics','Mobile Charger'],['Home','Kitchen Storage'],['Stationery','Notebook Pack']];
-let cart=0;
-function show(){const q=document.getElementById('search').value.toLowerCase();document.getElementById('products').innerHTML=items.filter(x=>x.join(' ').toLowerCase().includes(q)).map(x=>'<article><div>🛍️</div><h3>'+x[1]+'</h3><p>'+x[0]+'</p><button onclick="add()">Add to cart</button></article>').join('')||'<p>No products found.</p>'}
-function add(){cart++;document.getElementById('count').textContent=cart}
-document.getElementById('search').addEventListener('input',show);show();
+const items=[
+{name:"Basmati Rice",category:"Groceries",price:"Price on request"},
+{name:"Cooking Oil",category:"Groceries",price:"Price on request"},
+{name:"Cotton T-Shirt",category:"Clothing",price:"Price on request"},
+{name:"Mobile Charger",category:"Electronics",price:"Price on request"},
+{name:"Kitchen Storage",category:"Home Needs",price:"Price on request"},
+{name:"Notebook Pack",category:"Stationery",price:"Price on request"}
+];
+let cart=[];
+function showProducts(){
+const q=document.getElementById("search").value.toLowerCase();
+document.getElementById("products").innerHTML=items.filter(p=>(p.name+" "+p.category).toLowerCase().includes(q)).map((p,i)=>`<article><div style="font-size:32px">🛍️</div><h3>${p.name}</h3><p>${p.category}</p><p class="price">${p.price}</p><button onclick="addCart('${p.name}')">Add to Cart</button></article>`).join("");
+}
+function addCart(name){cart.push(name);document.getElementById("count").textContent=cart.length;alert(name+" added to cart");}
+function orderWhatsApp(){
+if(!cart.length){alert("Please add products to your cart first.");return;}
+const msg="Hello NTK BROTHERS MULTI STORE, I want to order:\n"+cart.join("\n");
+window.open("https://wa.me/919700071606?text="+encodeURIComponent(msg),"_blank");
+}
+showProducts();
 </script>
 </body>
 </html>
