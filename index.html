@@ -1,103 +1,57 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NTK BROTHERS MULTI STORE</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f6f8;color:#17202a}
-header{background:#102b22;color:white;padding:18px 15px;position:sticky;top:0;z-index:5}
-.brand{font-size:23px;font-weight:800}
-header p{margin:7px 0 12px;color:#d8f3dc}
-.search{width:100%;padding:13px;border:0;border-radius:10px;font-size:16px}
-main{max-width:850px;margin:auto;padding:15px}
-.delivery{background:#e1f5e7;padding:13px;border-radius:12px;margin-bottom:15px}
-h2{font-size:21px}
-.categories{display:flex;gap:9px;overflow:auto;padding:5px 0 15px}
-.categories button{white-space:nowrap;background:white;border:1px solid #ddd;padding:10px 13px;border-radius:22px;margin:0}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.card{background:white;border-radius:14px;padding:12px;box-shadow:0 2px 8px #0000000d}
-.pic{height:90px;background:#f4f5f5;border-radius:10px;display:grid;place-items:center;font-size:48px}
-.card h3{font-size:16px;margin:10px 0 5px}
-.small{color:#6b7280;font-size:13px}
-.price{font-weight:bold;margin-top:10px}
-.add{background:#168447;color:white;border:0;border-radius:8px;padding:10px 14px;font-weight:bold}
-.bottom{position:sticky;bottom:8px;background:#116b3a;color:white;padding:14px;border-radius:12px;margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.bottom button{background:#fff;color:#116b3a;border:0;padding:11px;border-radius:8px;font-weight:bold}
-footer{text-align:center;padding:20px;color:#777;font-size:13px}
-@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#172554}header{background:#102b22;color:white;padding:18px;position:sticky;top:0}header h1{margin:0;font-size:23px}header p{margin:7px 0 12px}input,textarea,select{width:100%;padding:12px;border:1px solid #ccd3df;border-radius:9px;margin:6px 0;font-size:16px}main{max-width:760px;margin:auto;padding:15px}button{border:0;border-radius:9px;padding:11px 14px;background:#168447;color:white;font-weight:bold;cursor:pointer}.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card,.panel{background:white;border-radius:12px;padding:13px;box-shadow:0 2px 8px #0001;margin-bottom:12px}.emoji{font-size:38px}.price{font-weight:bold;margin:8px 0}.line{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0}.muted{color:#64748b;font-size:13px}.hidden{display:none}.full{width:100%;margin-top:8px}.success{background:#e2f7e9;padding:14px;border-radius:10px;color:#14532d}@media(max-width:360px){.products{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header>
-  <div class="brand">NTK BROTHERS</div>
-  <p>MULTI STORE · Your Store, Your Choice</p>
-  <input class="search" id="search" placeholder="Search for rice, oil, snacks..." oninput="render()">
-</header>
+<header><h1>NTK BROTHERS</h1><p>MULTI STORE · Your Store, Your Choice</p><input id="search" placeholder="Search products..." oninput="render()"></header>
 <main>
-  <div class="delivery">📍 Home Delivery & Store Pickup<br><b>Order through WhatsApp</b></div>
-  <h2>Shop by category</h2>
-  <div class="categories">
-    <button onclick="setCategory('All')">All</button>
-    <button onclick="setCategory('Groceries')">Groceries</button>
-    <button onclick="setCategory('Snacks')">Snacks</button>
-    <button onclick="setCategory('Home Needs')">Home Needs</button>
-    <button onclick="setCategory('Clothing')">Clothing</button>
-    <button onclick="setCategory('Electronics')">Electronics</button>
-  </div>
-  <h2>Popular products</h2>
-  <div class="grid" id="products"></div>
-  <div class="bottom">
-    <div>🛒 <b id="count">0</b> items<br><span id="total">₹0</span></div>
-    <button onclick="checkout()">Order Now →</button>
-  </div>
-  <p class="small">Demo product list. Please confirm actual prices and availability before ordering.</p>
+<div class="panel"><b>🛍️ Shop with us</b><p class="muted">Sample products and demo prices. Confirm actual price and stock before selling.</p></div>
+<h2>Products</h2><div class="products" id="products"></div>
+<section class="panel"><h2>🛒 Your Cart (<span id="count">0</span>)</h2><div id="cart"></div><div class="line"><b>Total</b><b id="total">₹0</b></div><button class="full" onclick="showCheckout()">Proceed to Checkout</button></section>
+<section id="checkout" class="panel hidden"><h2>Checkout</h2><form id="orderForm">
+<label>Customer name<input id="customer" required autocomplete="name"></label>
+<label>Mobile number<input id="mobile" required type="tel" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number"></label>
+<label>Delivery option<select id="delivery" onchange="deliveryChanged()"><option value="delivery">Home Delivery</option><option value="pickup">Store Pickup</option></select></label>
+<div id="addressBox"><label>Delivery address<textarea id="address" rows="3" placeholder="House number, street, city, PIN code"></textarea></label></div>
+<label>Payment option<select id="payment"><option value="cod">Cash on Delivery</option><option value="store">Pay at Store on Pickup</option></select></label>
+<p class="muted">Online payment is not yet enabled. No payment will be collected on this website.</p>
+<button class="full" type="submit">Place Order</button></form></section>
+<section id="confirmation" class="panel hidden"><div class="success"><h2>✓ Order Details Created</h2><p id="orderInfo"></p><p class="muted">This demo does not send the order to a store server or save it permanently. Please save this order number.</p><button onclick="window.print()">Print / Save Order</button></div></section>
+<footer class="muted">NTK BROTHERS MULTI STORE</footer>
 </main>
-<footer>© NTK BROTHERS MULTI STORE<br>WhatsApp Support: 9700071606</footer>
 <script>
-const products=[
- {id:1,name:"Basmati Rice",cat:"Groceries",price:120,unit:"1 kg",emoji:"🍚"},
- {id:2,name:"Cooking Oil",cat:"Groceries",price:150,unit:"1 litre",emoji:"🫗"},
- {id:3,name:"Tea Powder",cat:"Groceries",price:90,unit:"250 g",emoji:"🫖"},
- {id:4,name:"Biscuits",cat:"Snacks",price:30,unit:"Pack",emoji:"🍪"},
- {id:5,name:"Potato Chips",cat:"Snacks",price:20,unit:"Pack",emoji:"🍟"},
- {id:6,name:"Kitchen Container",cat:"Home Needs",price:99,unit:"1 piece",emoji:"🥣"},
- {id:7,name:"Cotton T-Shirt",cat:"Clothing",price:249,unit:"1 piece",emoji:"👕"},
- {id:8,name:"Mobile Charger",cat:"Electronics",price:199,unit:"1 piece",emoji:"🔌"}
+const items=[
+{id:1,name:"Basmati Rice",category:"Groceries",price:120,emoji:"🍚"},
+{id:2,name:"Cooking Oil",category:"Groceries",price:150,emoji:"🫗"},
+{id:3,name:"Tea Powder",category:"Groceries",price:90,emoji:"🫖"},
+{id:4,name:"Biscuits",category:"Snacks",price:30,emoji:"🍪"},
+{id:5,name:"Potato Chips",category:"Snacks",price:20,emoji:"🍟"},
+{id:6,name:"Kitchen Container",category:"Home Needs",price:99,emoji:"🥣"},
+{id:7,name:"Cotton T-Shirt",category:"Clothing",price:249,emoji:"👕"},
+{id:8,name:"Mobile Charger",category:"Electronics",price:199,emoji:"🔌"}
 ];
-let category="All";
 let cart={};
-function setCategory(c){category=c;render()}
+function money(n){return "₹"+n}
+function total(){return items.reduce((s,p)=>s+p.price*(cart[p.id]||0),0)}
 function render(){
- const q=document.getElementById("search").value.toLowerCase();
- const list=products.filter(p=>(category==="All"||p.cat===category)&&(p.name+" "+p.cat).toLowerCase().includes(q));
- document.getElementById("products").innerHTML=list.map(p=>`
- <div class="card">
- <div class="pic">${p.emoji}</div>
- <h3>${p.name}</h3><div class="small">${p.unit}</div>
- <div class="price">₹${p.price}</div>
- <button class="add" onclick="add(${p.id})">${cart[p.id]?"Qty: "+cart[p.id]+"  +":"ADD +"}</button>
- </div>`).join("")||"<p>No products found.</p>";
- updateCart();
+let q=document.getElementById("search").value.toLowerCase();
+document.getElementById("products").innerHTML=items.filter(p=>(p.name+" "+p.category).toLowerCase().includes(q)).map(p=>'<article class="card"><div class="emoji">'+p.emoji+'</div><b>'+p.name+'</b><p class="muted">'+p.category+'</p><div class="price">'+money(p.price)+'</div><button onclick="add('+p.id+')">'+(cart[p.id]?"Qty: "+cart[p.id]+" · Add +":"Add to Cart +")+'</button></article>').join("");
+document.getElementById("count").textContent=Object.values(cart).reduce((a,b)=>a+b,0);
+document.getElementById("total").textContent=money(total());
+document.getElementById("cart").innerHTML=items.filter(p=>cart[p.id]).map(p=>'<div class="line"><span>'+p.name+' × '+cart[p.id]+'</span><span><button onclick="changeQty('+p.id+',-1)">−</button> '+money(p.price*cart[p.id])+' <button onclick="changeQty('+p.id+',1)">+</button></span></div>').join("")||'<p class="muted">Your cart is empty.</p>';
 }
 function add(id){cart[id]=(cart[id]||0)+1;render()}
-function updateCart(){
- let count=0,total=0;
- products.forEach(p=>{count+=cart[p.id]||0;total+=p.price*(cart[p.id]||0)});
- document.getElementById("count").textContent=count;
- document.getElementById("total").textContent="₹"+total;
-}
-function checkout(){
- let lines=[];
- products.forEach(p=>{if(cart[p.id])lines.push(p.name+" x "+cart[p.id]+" = ₹"+(p.price*cart[p.id]))});
- if(!lines.length){alert("Please add products first.");return}
- let total=products.reduce((s,p)=>s+p.price*(cart[p.id]||0),0);
- let msg="Hello NTK BROTHERS MULTI STORE!%0AOrder enquiry:%0A"+encodeURIComponent(lines.join("\n"))+"%0AEstimated total: ₹"+total+"%0APlease confirm stock, final price and delivery.";
- window.open("https://wa.me/919700071606?text="+msg,"_blank");
-}
-render();
+function changeQty(id,n){cart[id]=(cart[id]||0)+n;if(cart[id]<=0)delete cart[id];render()}
+function showCheckout(){if(!total()){alert("Please add a product to your cart.");return}document.getElementById("checkout").classList.remove("hidden");document.getElementById("checkout").scrollIntoView({behavior:"smooth"})}
+function deliveryChanged(){let pickup=document.getElementById("delivery").value==="pickup";document.getElementById("addressBox").classList.toggle("hidden",pickup);document.getElementById("address").required=!pickup;document.getElementById("payment").value=pickup?"store":"cod";document.querySelector('#payment option[value="store"]').disabled=!pickup}
+document.getElementById("orderForm").addEventListener("submit",function(e){e.preventDefault();if(!total())return;let id="NTK"+Date.now().toString().slice(-8);let lines=items.filter(p=>cart[p.id]).map(p=>p.name+" × "+cart[p.id]+" = "+money(p.price*cart[p.id])).join("\n");let method=document.getElementById("delivery").value==="pickup"?"Store Pickup":"Home Delivery";let pay=document.getElementById("payment").value==="cod"?"Cash on Delivery":"Pay at Store";let info="Order Number: "+id+"\nCustomer: "+document.getElementById("customer").value+"\nMobile: "+document.getElementById("mobile").value+"\nFulfilment: "+method+"\nPayment: "+pay+"\n"+(method==="Home Delivery"?"Address: "+document.getElementById("address").value+"\n":"")+"Items:\n"+lines+"\nTotal: "+money(total());document.getElementById("orderInfo").textContent=info;document.getElementById("confirmation").classList.remove("hidden");document.getElementById("confirmation").scrollIntoView({behavior:"smooth"});cart={};render()});
+deliveryChanged();render();
 </script>
 </body>
 </html>
