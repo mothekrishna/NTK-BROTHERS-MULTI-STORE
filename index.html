@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NTK BROTHERS MULTI STORE</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172554}
+header{background:#101d3a;color:white;padding:22px 16px}
+h1{margin:0;font-size:25px}
+header p{margin-bottom:0}
+main{padding:18px;max-width:900px;margin:auto}
+input{box-sizing:border-box;width:100%;padding:13px;border:1px solid #ccd3e0;border-radius:8px;font-size:16px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:18px}
+article{background:white;padding:16px;border-radius:12px;box-shadow:0 2px 8px #0001}
+article h3{margin-top:8px}
+button{background:#f28c28;color:#111827;border:0;padding:11px 13px;border-radius:8px;font-weight:bold}
+footer{padding:20px;text-align:center;color:#475569}
+</style>
+</head>
+<body>
+<header><h1>NTK BROTHERS MULTI STORE</h1><p>Your Store • Your Choice • Home Delivery</p></header>
+<main>
+<h2>Welcome to our store</h2>
+<p>Browse our sample products. Prices and stock are not live yet.</p>
+<input id="search" placeholder="Search products..." aria-label="Search products">
+<div class="products" id="products"></div>
+<h2>Cart: <span id="count">0</span> items</h2>
+<p>For orders and enquiries, contact us on WhatsApp.</p>
+<button onclick="window.open('https://wa.me/919700071606','_blank')">WhatsApp Order Enquiry</button>
+</main>
+<footer>NTK BROTHERS MULTI STORE • Sample website</footer>
+<script>
+const items=[['Rice','Basmati Rice'],['Cooking Oil','Cooking Oil'],['Clothing','Cotton T-Shirt'],['Electronics','Mobile Charger'],['Home','Kitchen Storage'],['Stationery','Notebook Pack']];
+let cart=0;
+function show(){const q=document.getElementById('search').value.toLowerCase();document.getElementById('products').innerHTML=items.filter(x=>x.join(' ').toLowerCase().includes(q)).map(x=>'<article><div>🛍️</div><h3>'+x[1]+'</h3><p>'+x[0]+'</p><button onclick="add()">Add to cart</button></article>').join('')||'<p>No products found.</p>'}
+function add(){cart++;document.getElementById('count').textContent=cart}
+document.getElementById('search').addEventListener('input',show);show();
+</script>
+</body>
+</html>
