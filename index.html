@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,57 +7,97 @@
 <title>NTK BROTHERS MULTI STORE</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f3f5fa;color:#172554}
-header{background:#101d3a;color:white;padding:24px 16px}
-header h1{margin:0;font-size:27px}
-header p{margin-bottom:0}
-main{padding:18px;max-width:1000px;margin:auto}
-input{width:100%;padding:14px;border:1px solid #ccd3e0;border-radius:10px;font-size:16px;margin:12px 0}
-.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-article{background:white;padding:15px;border-radius:16px;box-shadow:0 3px 12px #0001}
-article h3{margin:8px 0}
-.price{font-weight:bold;color:#d97706}
-button{background:#f28c28;color:#111827;border:0;padding:12px;border-radius:10px;font-weight:bold;margin-top:8px}
-footer{text-align:center;padding:22px}
-@media(max-width:360px){.products{grid-template-columns:1fr}}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f6f8;color:#17202a}
+header{background:#102b22;color:white;padding:18px 15px;position:sticky;top:0;z-index:5}
+.brand{font-size:23px;font-weight:800}
+header p{margin:7px 0 12px;color:#d8f3dc}
+.search{width:100%;padding:13px;border:0;border-radius:10px;font-size:16px}
+main{max-width:850px;margin:auto;padding:15px}
+.delivery{background:#e1f5e7;padding:13px;border-radius:12px;margin-bottom:15px}
+h2{font-size:21px}
+.categories{display:flex;gap:9px;overflow:auto;padding:5px 0 15px}
+.categories button{white-space:nowrap;background:white;border:1px solid #ddd;padding:10px 13px;border-radius:22px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{background:white;border-radius:14px;padding:12px;box-shadow:0 2px 8px #0000000d}
+.pic{height:90px;background:#f4f5f5;border-radius:10px;display:grid;place-items:center;font-size:48px}
+.card h3{font-size:16px;margin:10px 0 5px}
+.small{color:#6b7280;font-size:13px}
+.price{font-weight:bold;margin-top:10px}
+.add{background:#168447;color:white;border:0;border-radius:8px;padding:10px 14px;font-weight:bold}
+.bottom{position:sticky;bottom:8px;background:#116b3a;color:white;padding:14px;border-radius:12px;margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.bottom button{background:#fff;color:#116b3a;border:0;padding:11px;border-radius:8px;font-weight:bold}
+footer{text-align:center;padding:20px;color:#777;font-size:13px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 <header>
-<h1>NTK BROTHERS MULTI STORE</h1>
-<p>Your Store • Your Choice • Home Delivery</p>
+  <div class="brand">NTK BROTHERS</div>
+  <p>MULTI STORE · Your Store, Your Choice</p>
+  <input class="search" id="search" placeholder="Search for rice, oil, snacks..." oninput="render()">
 </header>
 <main>
-<h2>Welcome to our store</h2>
-<p>Browse our products and contact us to order.</p>
-<input id="search" placeholder="Search products..." oninput="showProducts()">
-<div id="products" class="products"></div>
-<h2>Your Cart: <span id="count">0</span> items</h2>
-<button onclick="orderWhatsApp()">Order on WhatsApp</button>
-<p>WhatsApp Support: 9700071606</p>
+  <div class="delivery">📍 Home Delivery & Store Pickup<br><b>Order through WhatsApp</b></div>
+  <h2>Shop by category</h2>
+  <div class="categories">
+    <button onclick="setCategory('All')">All</button>
+    <button onclick="setCategory('Groceries')">Groceries</button>
+    <button onclick="setCategory('Snacks')">Snacks</button>
+    <button onclick="setCategory('Home Needs')">Home Needs</button>
+    <button onclick="setCategory('Clothing')">Clothing</button>
+    <button onclick="setCategory('Electronics')">Electronics</button>
+  </div>
+  <h2>Popular products</h2>
+  <div class="grid" id="products"></div>
+  <div class="bottom">
+    <div>🛒 <b id="count">0</b> items<br><span id="total">₹0</span></div>
+    <button onclick="checkout()">Order Now →</button>
+  </div>
+  <p class="small">Demo product list. Please confirm actual prices and availability before ordering.</p>
 </main>
-<footer>© NTK BROTHERS MULTI STORE</footer>
+<footer>© NTK BROTHERS MULTI STORE<br>WhatsApp Support: 9700071606</footer>
 <script>
-const items=[
-{name:"Basmati Rice",category:"Groceries",price:"Price on request"},
-{name:"Cooking Oil",category:"Groceries",price:"Price on request"},
-{name:"Cotton T-Shirt",category:"Clothing",price:"Price on request"},
-{name:"Mobile Charger",category:"Electronics",price:"Price on request"},
-{name:"Kitchen Storage",category:"Home Needs",price:"Price on request"},
-{name:"Notebook Pack",category:"Stationery",price:"Price on request"}
+const products=[
+ {id:1,name:"Basmati Rice",cat:"Groceries",price:120,unit:"1 kg",emoji:"🍚"},
+ {id:2,name:"Cooking Oil",cat:"Groceries",price:150,unit:"1 litre",emoji:"🫗"},
+ {id:3,name:"Tea Powder",cat:"Groceries",price:90,unit:"250 g",emoji:"🫖"},
+ {id:4,name:"Biscuits",cat:"Snacks",price:30,unit:"Pack",emoji:"🍪"},
+ {id:5,name:"Potato Chips",cat:"Snacks",price:20,unit:"Pack",emoji:"🍟"},
+ {id:6,name:"Kitchen Container",cat:"Home Needs",price:99,unit:"1 piece",emoji:"🥣"},
+ {id:7,name:"Cotton T-Shirt",cat:"Clothing",price:249,unit:"1 piece",emoji:"👕"},
+ {id:8,name:"Mobile Charger",cat:"Electronics",price:199,unit:"1 piece",emoji:"🔌"}
 ];
-let cart=[];
-function showProducts(){
-const q=document.getElementById("search").value.toLowerCase();
-document.getElementById("products").innerHTML=items.filter(p=>(p.name+" "+p.category).toLowerCase().includes(q)).map((p,i)=>`<article><div style="font-size:32px">🛍️</div><h3>${p.name}</h3><p>${p.category}</p><p class="price">${p.price}</p><button onclick="addCart('${p.name}')">Add to Cart</button></article>`).join("");
+let category="All";
+let cart={};
+function setCategory(c){category=c;render()}
+function render(){
+ const q=document.getElementById("search").value.toLowerCase();
+ const list=products.filter(p=>(category==="All"||p.cat===category)&&(p.name+" "+p.cat).toLowerCase().includes(q));
+ document.getElementById("products").innerHTML=list.map(p=>`
+ <div class="card">
+ <div class="pic">${p.emoji}</div>
+ <h3>${p.name}</h3><div class="small">${p.unit}</div>
+ <div class="price">₹${p.price}</div>
+ <button class="add" onclick="add(${p.id})">${cart[p.id]?"Qty: "+cart[p.id]+"  +":"ADD +"}</button>
+ </div>`).join("")||"<p>No products found.</p>";
+ updateCart();
 }
-function addCart(name){cart.push(name);document.getElementById("count").textContent=cart.length;alert(name+" added to cart");}
-function orderWhatsApp(){
-if(!cart.length){alert("Please add products to your cart first.");return;}
-const msg="Hello NTK BROTHERS MULTI STORE, I want to order:\n"+cart.join("\n");
-window.open("https://wa.me/919700071606?text="+encodeURIComponent(msg),"_blank");
+function add(id){cart[id]=(cart[id]||0)+1;render()}
+function updateCart(){
+ let count=0,total=0;
+ products.forEach(p=>{count+=cart[p.id]||0;total+=p.price*(cart[p.id]||0)});
+ document.getElementById("count").textContent=count;
+ document.getElementById("total").textContent="₹"+total;
 }
-showProducts();
+function checkout(){
+ let lines=[];
+ products.forEach(p=>{if(cart[p.id])lines.push(p.name+" x "+cart[p.id]+" = ₹"+(p.price*cart[p.id]))});
+ if(!lines.length){alert("Please add products first.");return}
+ let total=products.reduce((s,p)=>s+p.price*(cart[p.id]||0),0);
+ let msg="Hello NTK BROTHERS MULTI STORE!%0AOrder enquiry:%0A"+encodeURIComponent(lines.join("\n"))+"%0AEstimated total: ₹"+total+"%0APlease confirm stock, final price and delivery.";
+ window.open("https://wa.me/919700071606?text="+msg,"_blank");
+}
+render();
 </script>
 </body>
 </html>
